@@ -1,26 +1,80 @@
+
 import matplotlib.pyplot as plt
 import pandas as pd
+import os
 
-# Les inn data
-df_exact = pd.read_csv("data_exact.csv")
-df_num = pd.read_csv("data_numerical.csv")
 
-# Fjerner eventuelle usynlige mellomrom i kolonnenavnene automatisk
-df_exact.columns = df_exact.columns.str.strip()
-df_num.columns = df_num.columns.str.strip()
+def plot_error():
+    # Les inn error-data
+    df_error = pd.read_csv("data/rel_error100.csv")
 
-# Opprett figur
-plt.figure()
+    # Fjern eventuelle usynlige mellomrom i kolonnenavnene
+    df_error.columns = df_error.columns.str.strip()
 
-# Plott rene Matplotlib-kall (slipper Pandas-legend buggen)
-plt.plot(df_exact["X"], df_exact["u"], label="Eksakt løsning")
-plt.plot(df_num["X"], df_num["u"], "--", label="Numerisk løsning")
+    # Opprett figur
+    plt.figure()
 
-# Pynt på plottet
-plt.title("Sammenligning av eksakt og numerisk løsning")
-plt.xlabel("X")
-plt.ylabel("u")
-plt.legend()
-plt.grid(True)
+    # Plot error
+    plt.plot(
+        df_error["X"],
+        df_error["u"],
+        label="Relativ feil"
+    )
 
-plt.show()
+    plt.title("Relativ feil")
+    plt.xlabel("X")
+    plt.ylabel("Feil")
+    plt.legend()
+    plt.grid(True)
+
+    plt.show()
+
+
+import matplotlib.pyplot as plt
+import pandas as pd
+from pathlib import Path
+
+
+def plot_numerical():
+
+    path = Path("project1/data")
+
+    # Eksakt løsning
+    df_exact = pd.read_csv(path / "data_exact.csv")
+
+    plt.figure()
+
+    plt.plot(
+        df_exact["X"],
+        df_exact["u"],
+        label="Eksakt løsning"
+    )
+
+    # Alle numeriske løsninger
+    for file in path.glob("data_numerical*.csv"):
+
+        df_num = pd.read_csv(file)
+
+        plt.plot(
+            df_num["X"],
+            df_num["u"],
+            label=file.stem
+        )
+
+    plt.title("Numerisk og eksakt løsning")
+    plt.xlabel("X")
+    plt.ylabel("u")
+    plt.legend()
+    plt.grid(True)
+
+    plt.show()
+
+
+def main():
+    #plot_error()
+    plot_numerical()
+
+
+if __name__ == "__main__":
+    main()
+

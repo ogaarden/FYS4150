@@ -30,8 +30,7 @@ void saveToFile(const std::vector<double>& X, const std::vector<double>& u, cons
 
     std::ofstream file(path);
 
-    file << std::fixed << std::setprecision(3);
-
+    file << std::fixed << std::setprecision(10);
     file << "X,u," << X.size() << "\n";
 
     for (int i = 0; i < X.size(); i++){
@@ -90,15 +89,14 @@ void relativeError(
     const std::vector<double> & u_numerical,
     const std::string& path
 ){
-    int n = X.size();
 
-    double s = 0;
+    std::vector<double> rel_err(X.size(),0);
 
     for(int i = 1; i < X.size()-1; i++){
-        s += log10(abs(u(X[i]) - u_numerical[i]));
+        rel_err[i] = log10(abs(u(X[i]) - u_numerical[X[i]]));
     }
 
-    saveToFile(X, u_numerical, path);
+    saveToFile(X, rel_err, path);
 }
 
 
@@ -107,8 +105,8 @@ int main(){
     std::vector<int> N({10, 100, 1000});
     double L = 1.0;
 
-    double diag = -2;
-    double offdiag = 1;
+    double diag = 2;
+    double offdiag = -1;
 
     std::vector<double>X_analytical;
 
@@ -124,7 +122,7 @@ int main(){
         std::vector<double> fd = discretizedf(X);
         std::vector<double>u_numerical = thomasAlgorithm(X, fd, A);
 
-        //saveToFile(X, u_numerical, "data/data_numerical" + std::to_string(N[i]) + ".csv");
+        saveToFile(X, u_numerical, "data/data_numerical" + std::to_string(N[i]) + ".csv");
         relativeError(X, u_numerical, "data/rel_error" + std::to_string(N[i]) + ".csv");
 
         if (i == N.size()-1){
@@ -132,8 +130,8 @@ int main(){
         }
     }
 
-    //std::vector<double>u_analytic = analyticalSolver(X_analytical);
-    //saveToFile(X_analytical, u_analytic, "data_exact.csv");
+    std::vector<double>u_analytic = analyticalSolver(X_analytical);
+    saveToFile(X_analytical, u_analytic, "data_exact.csv");
 
 
     return 0;
