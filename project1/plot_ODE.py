@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-
+a = 2
+b = a * a
 def plot_error():
     # Les inn error-data
     df_error = pd.read_csv("data/rel_error100.csv")
