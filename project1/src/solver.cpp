@@ -37,7 +37,7 @@ std::vector<double> discretizedf(const std::vector<double>& X){
     return fd;
 }
 
-arma::mat tridiagonalMatrix(const std::vector<double>& X, double& diag, double& offdiag){
+arma::mat tridiagonalMatrix(const std::vector<double>& X, const double diag, const double offdiag){
     int n = X.size();
     arma::mat A = arma::mat(n,n).fill(0.);
     
@@ -74,30 +74,29 @@ std::vector<double> thomasAlgorithm(
 
 std::vector<double> absoluteError(
     const std::vector<double>& X,
-    const std::vector<double> & u_numerical,
-    const std::string& path
+    const std::vector<double> & u_numerical
 ){
 
     std::vector<double> absErr(X.size(),0);
 
     for(int i = 1; i < X.size()-1; i++){
-        absErr[i] = log10(abs(u(X[i]) - u_numerical[X[i]]));
+        absErr[i] = abs(u(X[i]) - u_numerical[X[i]]);
     }
 
     return absErr;
 }
 
 
-// UNFINISHED 
 std::vector<double> relativeError(
     const std::vector<double>& X,
-    const std::vector<double> & u_numerical,
-    const std::string& path
+    const std::vector<double> & u_numerical
 ){
 
     std::vector<double> relErr(X.size(), 0);
 
     for(int i = 1; i < X.size()-1; i++){
-        relErr[i] = i;
+        relErr[i] = (u(X[i])- u_numerical[X[i]])/u(X[i]);
     }
+
+    return relErr;
 }

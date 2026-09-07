@@ -1,2 +1,8 @@
 *.exe
 *.out
+
+data/
+media/
+plots/
+
+__pycache__/

@@ -16,14 +16,19 @@ std::vector<double> discretizedf(
 
 arma::mat tridiagonalMatrix(
     const std::vector<double>& X,
-    double diag,
-    double offdiag
+    const double diag,
+    const double offdiag
 );
 
 std::vector<double> thomasAlgorithm(
     const std::vector<double>& X,
     std::vector<double> fd,
     arma::mat& A
+);
+
+std::vector<double> absoluteError(
+    const std::vector<double>& X,
+    const std::vector<double>& u_numerical
 );
 
 std::vector<double> relativeError(
