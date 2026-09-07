@@ -83,6 +83,8 @@ std::vector<double> absoluteError(
         absErr[i] = abs(u(X[i]) - u_numerical[X[i]]);
     }
 
+    absErr.back() = abs(u_numerical.back());
+
     return absErr;
 }
 
@@ -97,6 +99,8 @@ std::vector<double> relativeError(
     for(int i = 1; i < X.size()-1; i++){
         relErr[i] = (u(X[i])- u_numerical[X[i]])/u(X[i]);
     }
+
+    relErr.back() = abs(u_numerical.back());
 
     return relErr;
 }

@@ -46,7 +46,7 @@ int main(){
 
     for(int i = 0; i < N.size(); i++){
 
-        std::vector<double> X(N[i],0);
+        std::vector<double> X(N[i]+1,0);
         double h = (end_point - start_point)/N[i];
 
         for (int j = 1;j  < N[i]+1; j++){
